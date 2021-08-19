@@ -45,6 +45,8 @@ from itertools import count
 # used to store trades and sell assets
 import json
 
+import csv
+
 # Load helper modules
 from helpers.parameters import (
     parse_args, load_config
@@ -419,7 +421,7 @@ def sell_coins():
                 print(f'TP or SL not yet reached, not selling {coin} for now {BuyPrice} - {LastPrice} : {txcolors.SELL_PROFIT if PriceChange >= 0. else txcolors.SELL_LOSS}{PriceChange-(TRADING_FEE*2):.2f}% Est:${(QUANTITY*(PriceChange-(TRADING_FEE*2)))/100:.2f}{txcolors.DEFAULT}')
 
     if hsp_head == 1 and len(coins_bought) == 0: print(f'Not holding any coins')
- 
+
     return coins_sold
 
 
@@ -520,7 +522,7 @@ if __name__ == '__main__':
         client = Client(access_key, secret_key, tld='us')
     else:
         client = Client(access_key, secret_key)
-        
+
     # If the users has a bad / incorrect API key.
     # this will stop the script from starting, and display a helpful error.
     api_ready, msg = test_api_key(client, BinanceAPIException)
@@ -582,7 +584,7 @@ if __name__ == '__main__':
                 t = threading.Thread(target=mymodule[module].do_work, args=())
                 t.daemon = True
                 t.start()
-                time.sleep(2)
+                time.sleep(90)
         else:
             print(f'No modules to load {SIGNALLING_MODULES}')
     except Exception as e:
@@ -602,7 +604,5 @@ if __name__ == '__main__':
             READ_TIMEOUT_COUNT += 1
             print(f'{txcolors.WARNING}We got a timeout error from from binance. Going to re-loop. Current Count: {READ_TIMEOUT_COUNT}\n{rt}{txcolors.DEFAULT}')
         except ConnectionError as ce:
-            CONNECTION_ERROR_COUNT +=1 
+            CONNECTION_ERROR_COUNT +=1
             print(f'{txcolors.WARNING}We got a timeout error from from binance. Going to re-loop. Current Count: {CONNECTION_ERROR_COUNT}\n{ce}{txcolors.DEFAULT}')
-
-
